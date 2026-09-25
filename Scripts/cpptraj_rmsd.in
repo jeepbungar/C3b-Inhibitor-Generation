@@ -1,0 +1,24 @@
+#This is the script that was used
+# K-means Clustering
+parm C3b_leap.parm7
+trajin *.dcd 1 last 10
+
+strip :TIP3  # Remove water molecules
+strip :SOD   # Remove sodium ions
+strip :CLA   # Remove chloride ions
+
+cluster c1 \
+    kmeans clusters 99 randompoint maxit 500 \
+    rms :1-1574@C,N,O,CA,CB&!@H= sieve 10 random \
+    out cnumvtime.dat \
+    summary summary.dat \
+    info info.dat \
+    cpopvtime cpopvtime.agr normframe \
+    repout rep repfmt pdb \
+    singlerepout singlerep.nc singlerepfmt netcdf \
+    avgout avg avgfmt pdb
+run
+
+#to run
+#conda activate ambertools23
+#cpptraj cpptraj_rmsd.in

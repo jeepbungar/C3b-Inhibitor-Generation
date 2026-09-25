@@ -1,0 +1,32 @@
+#tleap script working
+source leaprc.protein.ff19SB
+source leaprc.water.opc
+source leaprc.gaff
+
+loadamberparams ligand.frcmod
+set default FlexibleWater on
+
+#loading the clean pdb file
+
+
+#UNL=loadmol2 ligand.mol2
+#mol=loadpdb P+L.pdb 
+
+protein = loadpdb protein_pqr.pdb
+ligand = loadmol2 ligand.mol2
+pro_lig = combine {protein ligand}
+
+#combine
+#mol = combine{ prot ATP AMP HOH MG CA UNL}
+#check charge
+charge pro_lig
+#solvation
+solvateBox pro_lig OPCBOX 10.0
+
+#neutralize
+addIons pro_lig K+ 0
+addIons pro_lig Cl- 0
+
+saveamberparm pro_lig tleap_prot_lig.parm7 tleap_prot_lig.rst7
+savepdb pro_lig tleap_prot_lig.pdb
+quit
